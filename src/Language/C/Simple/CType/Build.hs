@@ -1,5 +1,6 @@
 module Language.C.Simple.CType.Build where
-import Language.C.Simple.CType
+import Language.C.Simple.CType.Types
+import Language.C.Simple.CType.Class
 
 -- | Use a string and value to make a TMember
 mkStructMember :: ToCType a => String -> a -> CType
@@ -18,6 +19,7 @@ mkRecordCType name members = TUnion name [TMember name $ TStruct "" members]
 mkArray :: ToCType a => Int -> a -> CType
 mkArray count typ = TArray count (toCType typ)
 
+
 -- | Alias for mkArray
 (<||>) :: ToCType a => Int -> a -> CType
 (<||>) = mkArray
@@ -35,19 +37,4 @@ infix 9 <:::>
 
 mkMember name typ = TMember name typ
 
-{-
-v_member = VMember . VPrimitive
 
-v_struct = VStruct . map v_member
-
-
-mk_struct_member name typ = TMember name $ to_c_type typ
-
-
-
-mk_primitive_member name primitive = TMember name $ TPrimitive primitive
-
-mk_record_ctype name members = TUnion name [TMember name $ TStruct "" members]
-
-mk_array count typ = TArray count (to_c_type typ)
--}
